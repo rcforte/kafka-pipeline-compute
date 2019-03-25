@@ -102,6 +102,7 @@ public class AppTest {
             DataTypes.createStructField("date", DataTypes.StringType, false)
         }
     );
+
     SparkSession spark = SparkSession
         .builder()
         .master("local[*]")
@@ -118,6 +119,7 @@ public class AppTest {
         .select(functions.from_json(functions.col("payload"), schema).as("json"))
         .select("json.*").as(Encoders.bean(Price.class))
         .writeStream()
+
         .format("kafka")
         .option("checkpointLocation", "/home/rcforte/kafka-checkpoint-location")
         .option("kafka.bootstrap.servers", "localhost:9092")
